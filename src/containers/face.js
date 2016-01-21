@@ -20,7 +20,7 @@ class Face extends Component {
   }
 
   state = {
-    face: false
+    face: true
   }
 
   componentDidMount() {
@@ -30,14 +30,20 @@ class Face extends Component {
     });
 
     conn.on('message', function(message){
-      // self.setState({face: true})
+      console.log('got message', message)
+      self.setState({
+        face: true,
+        action: message.action
+      })
     });
     // LISTEN a
 
   }
   render() {
-    console.log(this.state);
-    let componentClass = ClassNames( { 'face': this.state.face})
+    var classes = {face: true}
+    classes[this.state.action] = true
+
+    let componentClass = ClassNames(classes)
     return <div>
       <div className={componentClass}>{this.state.face}</div>
     </div>

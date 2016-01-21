@@ -109,3 +109,7 @@ a {
   width: 1000px;
   background-color: red;
 }
+
+.face.smiling {
+  background-color: green;  
+}
