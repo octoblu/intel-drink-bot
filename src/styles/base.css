@@ -82,17 +82,17 @@ html {
 
 body {
   margin: 0;
-  padding: 0;
+  padding: 24px;
 
-  background: #F9FBFC;
-  color: #4D5659;
+  background: #040404;
+  color: #5cc3f6;
   font-size: 16px;
   font-family: "citrixsans-regular", Arial, Helvetica, sans-serif;
   line-height: 1.4;
 }
 
 a {
-  color: #14568f;
+  color: #5cc3f6;
 }
 
 .container {

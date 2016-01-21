@@ -1,0 +1,24 @@
+.OrderList {
+  display: flex;
+  flex-direction: column;
+}
+
+.OrderList-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.OrderList-button {
+  border: 1px solid #5cc3f6;
+  padding: 24px;
+  width: 30%;
+
+  background: transparent;
+
+  color: #5cc3f6;
+  font-size: 21px;
+  text-align: center;
+
+  cursor: pointer;
+}
