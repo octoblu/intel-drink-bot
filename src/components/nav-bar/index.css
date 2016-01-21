@@ -1,0 +1,35 @@
+.NavBar {
+  border-bottom: 1px solid #EDEDED;
+  width: 100%;
+
+  background: #FFF;
+  padding-top: 12px;
+}
+
+.NavBar-nav {
+  display: flex;
+  margin: 0;
+  padding: 0 36px;
+  width: 100%;
+}
+
+.NavBar-action {
+  display: block;
+  padding: 12px 24px;
+
+  color: #14568f;
+  font-family: "citrixsans-regular", Arial, Helvetica, sans-serif;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.NavBar-action:hover {
+  color: #0b2e4c;
+}
+
+
+.NavBar-action--active {
+  color: #14568f;
+  /*border-bottom: 3px solid #6ADC2A;*/
+  border-bottom: 3px solid #4CAF50;
+}
