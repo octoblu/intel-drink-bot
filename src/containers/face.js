@@ -31,15 +31,9 @@ class Face extends Component {
     })
   }
 
-  vocalize({action, text, utterance}, callback) {
+  dance ({action, text}, callback) {
     var self = this;
-
-    utterance.onend = utterance.onend = function() {
-      self.setState({action: 'wait'})
-      if(callback) callback()
-    }
-    speechSynthesis.speak(utterance)
-
+    self.setState({action, glitch:false})
   }
 
   say({action, text}, callback) {
@@ -88,6 +82,17 @@ class Face extends Component {
   laugh(message) {
     var self = this
     self.setState({action: message.action})
+  }
+
+  vocalize({action, text, utterance}, callback) {
+    var self = this;
+
+    utterance.onend = utterance.onend = function() {
+      self.setState({action: 'wait'})
+      if(callback) callback()
+    }
+    speechSynthesis.speak(utterance)
+
   }
 
   render() {

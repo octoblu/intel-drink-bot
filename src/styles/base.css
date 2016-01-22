@@ -134,6 +134,17 @@ a {
   transform: rotate(45deg);
 }
 
+.face.wait.glitch {
+  animation-name: chris-dance;
+  animation-duration: 1.3s;
+  animation-iteration-count: infinite;
+}
+
+.face.dance {
+  animation-name: chris-dance;
+  animation-duration: 1.3s;
+  animation-iteration-count: infinite;
+}
 
 @keyframes chris-say-glitch {
   0% {
@@ -157,7 +168,7 @@ a {
 
 
 
-@keyframes chris-laugh {
+@keyframes chris-dance {
   0% {
     background-image: url('../../images/chris/lighten/chris-face-front.png');
   }
@@ -175,5 +186,32 @@ a {
   }
   50% {
     background-image: url('../../images/chris/lighten/chris-face-front.png');
+  }
+}
+
+@keyframes chris-dance {
+  12% {
+    background-image: url('../../images/chris/lighten/chris-face-front.png');
+  }
+  24% {
+    background-image: url('../../images/chris/lighten/chris-face-left.png');
+  }
+  36% {
+    background-image: url('../../images/chris/lighten/chris-face-left2.png');
+  }
+  48% {
+    background-image: url('../../images/chris/lighten/chris-face-left.png');
+  }
+  60% {
+    background-image: url('../../images/chris/lighten/chris-face-front-open2.png');
+  }
+  72% {
+    background-image: url('../../images/chris/lighten/chris-face-right1.png');
+  }
+  84% {
+    background-image: url('../../images/chris/lighten/chris-face-right2.png');
+  }
+  96% {
+    background-image: url('../../images/chris/lighten/chris-face-right1.png');
   }
 }
