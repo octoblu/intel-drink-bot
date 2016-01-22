@@ -6,7 +6,7 @@ import '../styles/base.css'
 
 export default class Layout extends Component {
   render() {
-    return <div className="main">
+    return <div id="main">
       {this.props.children}
     </div>
   }

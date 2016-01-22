@@ -10,14 +10,15 @@ var meshbluConfig = {
 }
 
 
-var glitchWords = ['future', 'citrix', 'skynet', 'drink']
+var glitchWords = ['future', 'citrix', 'skynet', 'drink', 'treat']
 class Face extends Component {
   constructor(props) {
     super(props)
   }
 
   state = {
-    face: true
+    face: true,
+    action: 'wait'
   }
 
   componentDidMount() {
@@ -45,6 +46,7 @@ class Face extends Component {
     self.setState({action, glitch:false})
     var utterance = new SpeechSynthesisUtterance(text)
     utterance.voice = _.find(speechSynthesis.getVoices(), {name: 'Daniel'})
+    utterance.rate = 0.8
     utterance.onboundary = function(event) {
       text = event.utterance.text
 
@@ -78,7 +80,7 @@ class Face extends Component {
     var utterance = new SpeechSynthesisUtterance(text)
 
     utterance.voice = voice
-    utterance.pitch = 1.8
+    utterance.pitch = 1.7
     utterance.rate = 1.7
     self.vocalize({action, text, utterance}, callback)
   }
@@ -108,6 +110,7 @@ class Face extends Component {
     var classes = {face: true}
     classes[this.state.action] = true
     classes['glitch'] = this.state.glitch
+    classes['normal'] = !this.state.glitch
 
     let componentClass = ClassNames(classes)
     return <div className={componentClass}>{this.state.face}</div>

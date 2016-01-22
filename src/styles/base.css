@@ -76,9 +76,13 @@ html {
   box-sizing: border-box;
 }
 
-html, body, #app {
+html, body, #app, #main {
   height:100%;
   width:100%;
+}
+
+#main {
+  display:flex;
 }
 
 *, *:before, *:after {
@@ -109,9 +113,9 @@ a {
 .face {
   background: url(../../images/chris/lighten/chris-face-front.png) center center no-repeat;
   background-size: contain;
-  min-height: 80vh;
-  min-width: 80vw;
   animation-timing-function: step-start;
+  height:100%;
+  width:100%;
 }
 
 .face.laugh {
@@ -120,7 +124,7 @@ a {
   animation-iteration-count: infinite;
 }
 
-.face.say {
+.face.say.normal {
   animation-name: chris-say;
   animation-duration: 0.3s;
   animation-iteration-count: infinite;
