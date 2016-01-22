@@ -31,6 +31,10 @@ class Face extends Component {
     })
   }
 
+  reload ({action, text}, callback) {
+    location.reload(true);
+  }
+
   dance ({action, text}, callback) {
     var self = this;
     self.setState({action, glitch:false})
@@ -75,11 +79,16 @@ class Face extends Component {
 
     utterance.voice = voice
     utterance.pitch = 1.8
-    utterance.rate = 1.8
+    utterance.rate = 1.7
     self.vocalize({action, text, utterance}, callback)
   }
 
   laugh(message) {
+    var self = this
+    self.setState({action: message.action})
+  }
+
+  wait(message) {
     var self = this
     self.setState({action: message.action})
   }

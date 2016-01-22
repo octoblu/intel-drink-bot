@@ -131,7 +131,7 @@ a {
   animation-name: chris-say-glitch;
   animation-duration: 0.15s;
   animation-iteration-count: infinite;
-  transform: rotate(45deg);
+  /*transform: rotate(45deg);*/
 }
 
 .face.wait.glitch {
@@ -154,6 +154,10 @@ a {
   50% {
     background-image: url('../../images/chris/lighten/chris-face-left2.png');
   }
+
+  90% {
+    background-image: url('../../images/chris/lighten/chris-face-left2-open.png');
+  }
 }
 
 
@@ -168,7 +172,7 @@ a {
 
 
 
-@keyframes chris-dance {
+@keyframes chris-laugh {
   0% {
     background-image: url('../../images/chris/lighten/chris-face-front.png');
   }

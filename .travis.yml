@@ -1,17 +1,28 @@
 language: node_js
 node_js:
 - '5'
-addons:
-  code_climate:
-    repo_token: <REPO TOKEN GOES HERE>
 before_script:
-  - npm install -g codeclimate-test-reporter
-after_script:
-- codeclimate-test-reporter < coverage/lcov.info
+- if [ ${TRAVIS_BRANCH} == master ]; then export NODE_ENV=production; else export
+  NODE_ENV=staging; fi
+
+after_success:
+- npm install --global webpack
+- NODE_ENV=production webpack --config webpack.config.prod.js
+- mkdir build
+- cp -r index.html dist build/
+- for file in `find build -type f`; do gzip --best $file && mv $file.gz $file; done
+
+# after_deploy:
+# - ./deploy/invalidate-cloudfront.sh $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY $TRAVIS_BRANCH
+
 deploy:
-  provider: npm
-  email: serveradmin@octoblu.com
-  api_key:
+  provider: s3
+  access_key_id: AKIAJFJGT4PA3PB7DIYQ
+  secret_access_key:
+    secure: IFl6Ke5UKFimK9yJtY/f9FY3cWyA/g2GaHJyOtZTUxmsak0n/nN4mpwyEgVj1U8LcXYl4PFXmEwrON0s3CEFOmp4qIr5rQrPYN/cMg3IS7MpPQ2wfkX+9Vth9YzS+f5sdxL03GknBgS19Gk9s+1nduFZFkYLb8yLkM9qtapNceifkD2oABeUUVQVXc3BzzFATW26/2X9X/+vfgvgy2Q97vP82O/XBXxzrikZksfVRvBiRjUVZmefJYlQ+/CykLCbddgM7Wr527esjeSfjdCeFZzHagS0zVMBttKcqFuac3dHdPWi3BuCw8Ftm1xbWRuhkUjvZufJaQxWBNZOdYw1XlvWj/NuDxOLxjZWqtScZzYJniyGHq5T6/R3vtUIPmcxv53Gxr9oinnNSMcMS4UUiWMKhUSbrBp5Qt54nXyEqUyBis3rxZDKifOmVmXf1A02K0MrBjCAHfnuoi4mw5EUBW5HEPLAsh1PLvngET/lvFm11l/2ZtMT5Hr/JE0Yc1o5vvkzGLKJ2lWKgtOcIooYAA9gILDXlY4O1WX0cLWRFB4uvuy2dhxC98b/dTtLAn8nta6UpkHezLKpPUbCncK1UDxnCkQJs6m8x/CPLyaB0PEeqkV0D05pvFM/zhHh0H3hAh+naOFS/fe05ajQH6HWP5xV2dl7djnygl1f1MHOId4=
+  bucket: intel-drink-bot
+  skip_cleanup: true
+  local_dir: build
+  acl: public_read
   on:
-    tags: true
-    branches: true
+    repo: octoblu/intel-drink-bot
