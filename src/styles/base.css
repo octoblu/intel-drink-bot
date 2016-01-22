@@ -117,6 +117,23 @@ a {
   animation-iteration-count: infinite;
 }
 
+.face.talk {
+  animation-name: chris-talk;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes chris-talk {
+  0% {
+    background-image: url('../../images/chris/lighten/chris-face-front.png');
+  }
+  50% {
+    background-image: url('../../images/chris/lighten/chris-face-front-open.png');
+  }
+}
+
+
+
 @keyframes chris-laugh {
   0% {
     background-image: url('../../images/chris/lighten/chris-face-front.png');
