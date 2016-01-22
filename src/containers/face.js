@@ -10,7 +10,7 @@ var meshbluConfig = {
 }
 
 
-var glitchWords = ['future', 'citrix', 'skynet']
+var glitchWords = ['future', 'citrix', 'skynet', 'drink']
 class Face extends Component {
   constructor(props) {
     super(props)
@@ -31,7 +31,6 @@ class Face extends Component {
     })
   }
 
-
   vocalize({action, text, utterance}, callback) {
     var self = this;
 
@@ -45,20 +44,24 @@ class Face extends Component {
 
   say({action, text}, callback) {
     var self = this
-    self.setState({action})
+    self.setState({action, glitch:false})
     var utterance = new SpeechSynthesisUtterance(text)
     utterance.voice = _.find(speechSynthesis.getVoices(), {name: 'Daniel'})
     utterance.onboundary = function(event) {
       text = event.utterance.text
+
+      if(event.charIndex === 0) {
+        return
+      }
+
       var spoken = text.substring(0, event.charIndex)
       var rest = text.substring(event.charIndex, text.length)
-      var nextWord = _.last( _.words( _.lowerCase(spoken) ))
+      var nextWord = _.first( _.words( _.lowerCase(rest) ))
 
       if(_.includes(glitchWords, nextWord)) {
         utterance.onend = null
         speechSynthesis.cancel()
-
-        self.glitchSay({action, text: nextWord}, function(){
+        self.glitchSay({action: action, text: nextWord}, function(){
           self.say({action, text:rest}, callback)
         });
       }
@@ -66,19 +69,19 @@ class Face extends Component {
     self.vocalize({action, text, utterance}, callback)
   }
 
-  glitchSay({action, text}, callback) {
-    text = "future"
+  glitchSay(options, callback) {
+    var action = options.action
     var self = this;
-    console.log('glitchSay', text)
     self.setState({action, glitch:true})
 
-    var text = _.fill(Array(3), text).join(' ')
-    var voice = _.find(speechSynthesis.getVoices(), {name: 'Daniel'})
+    var text = _.fill(Array(3), options.text.substring(0,1)).join(' ')
+    text += ' ' + options.text
+    var voice = _.find(speechSynthesis.getVoices(), {name: 'Alex'})
     var utterance = new SpeechSynthesisUtterance(text)
 
     utterance.voice = voice
-    utterance.pitch = 2
-    utterance.rate = 2
+    utterance.pitch = 1.8
+    utterance.rate = 1.8
     self.vocalize({action, text, utterance}, callback)
   }
 

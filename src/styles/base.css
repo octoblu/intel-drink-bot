@@ -126,6 +126,26 @@ a {
   animation-iteration-count: infinite;
 }
 
+
+.face.say.glitch {
+  animation-name: chris-say-glitch;
+  animation-duration: 0.15s;
+  animation-iteration-count: infinite;
+  transform: rotate(45deg);
+}
+
+
+@keyframes chris-say-glitch {
+  0% {
+    background-image: url('../../images/chris/lighten/chris-face-left.png');
+  }
+
+  50% {
+    background-image: url('../../images/chris/lighten/chris-face-left2.png');
+  }
+}
+
+
 @keyframes chris-say {
   0% {
     background-image: url('../../images/chris/lighten/chris-face-front.png');
