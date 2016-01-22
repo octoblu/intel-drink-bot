@@ -12,13 +12,16 @@ app.use(require('webpack-dev-middleware')(compiler, {
   publicPath: config.output.publicPath
 }));
 
-// app.use(require('webpack-hot-middleware')(compiler));
+
+app.get('/meshblu.js', function(req, res) {
+  res.sendFile(path.join(__dirname, 'lib/meshblu.js'));
+});
 
 app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.listen(PORT, 'localhost', function(err) {
+app.listen(PORT, '0.0.0.0', function(err) {
   if (err) {
     console.log(err);
     return;

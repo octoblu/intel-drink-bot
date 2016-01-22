@@ -24,12 +24,35 @@ class Face extends Component {
   componentDidMount() {
     var self = this
     var conn = meshblu.createConnection(meshbluConfig)
-
+    self.randomlyGlitch()
     conn.on('message', function(message){
+      console.log('message',message)
       if(self[message.action]) {
         self[message.action](message)
       }
     })
+  }
+
+  randomlyGlitch() {
+    var self = this
+    setInterval(function(){
+      if(Math.random() > 0.01) {
+        self.glitch()
+        setTimeout(function(){
+          self.unGlitch()
+        }, 5000);
+      }
+    }, 5000)
+  }
+
+  glitch() {
+    var self = this;
+    self.setState({glitch: true})
+  }
+
+  unGlitch() {
+    var self = this;
+    self.setState({glitch: false})
   }
 
   reload ({action, text}, callback) {
@@ -70,6 +93,7 @@ class Face extends Component {
   }
 
   glitchSay(options, callback) {
+    console.log('glitchSay', options)
     var action = options.action
     var self = this;
     self.setState({action, glitch:true})
@@ -106,14 +130,28 @@ class Face extends Component {
 
   }
 
+  requestFullscreen() {
+    var elem = document.getElementById("face")
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+      elem.msRequestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen();
+    }
+  }
+
   render() {
+    var self = this;
     var classes = {face: true}
     classes[this.state.action] = true
     classes['glitch'] = this.state.glitch
     classes['normal'] = !this.state.glitch
 
     let componentClass = ClassNames(classes)
-    return <div className={componentClass}>{this.state.face}</div>
+    return <div onClick={self.requestFullscreen} id="face" className={componentClass}>{this.state.face}</div>
   }
 }
 

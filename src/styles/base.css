@@ -133,9 +133,9 @@ a {
 
 .face.say.glitch {
   animation-name: chris-say-glitch;
-  animation-duration: 0.15s;
+  animation-duration: 0.20s;
   animation-iteration-count: infinite;
-  /*transform: rotate(45deg);*/
+  background-repeat: repeat;
 }
 
 .face.wait.glitch {
