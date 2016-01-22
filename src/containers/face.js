@@ -15,7 +15,7 @@ function vocalize(text, callback){
   var utterance = new SpeechSynthesisUtterance(text)
   utterance.voice = voice
   utterance.onend = callback
-  speechSynthesis.speak(utterance)  
+  speechSynthesis.speak(utterance)
 }
 
 class Face extends Component {
@@ -44,6 +44,11 @@ class Face extends Component {
     vocalize(message.text, function(){
       self.setState({action: 'wait'})
     })
+  }
+
+  laugh(message) {
+    var self = this
+    self.setState({action: message.action})    
   }
 
   render() {
