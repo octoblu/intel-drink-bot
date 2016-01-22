@@ -105,19 +105,19 @@ a {
 }
 
 .face {
-  background: url(../../images/chris/lighten/chris-face-front.png) center center no-repeat fixed;  
+  background: url(../../images/chris/lighten/chris-face-front.png) center center no-repeat fixed;
   height:1000px;
   width:1000px;
+  animation-timing-function: step-start;
 }
 
-.face.smiling {
-  animation-name: chris1;
+.face.laugh {
+  animation-name: chris-laugh;
   animation-duration: 1s;
   animation-iteration-count: infinite;
-  transition: all 0s;
 }
 
-@keyframes chris1 {
+@keyframes chris-laugh {
   0% {
     background-image: url('../../images/chris/lighten/chris-face-front.png');
   }
