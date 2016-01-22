@@ -26,6 +26,10 @@ module.exports = {
       {
         test:   /\.css$/,
         loader: "style-loader!css-loader!postcss-loader"
+      },
+      {
+        test: /\.jpg$/,
+        loader: "url-loader?limit=10000&minetype=image/jpg"
       }
     ]
   },

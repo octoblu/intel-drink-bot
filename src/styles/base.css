@@ -105,11 +105,11 @@ a {
 }
 
 .face {
+  background: url(../../images/chris.jpg) no-repeat center center fixed;
   height: 1000px;
   width: 1000px;
-  background-color: red;
 }
 
 .face.smiling {
-  background-color: green;  
+  background-color: green;
 }
