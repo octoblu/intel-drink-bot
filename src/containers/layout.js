@@ -6,10 +6,8 @@ import '../styles/base.css'
 
 export default class Layout extends Component {
   render() {
-    return <div>
-      <h1>Intel Robot Hub</h1>
-
-      <div>{this.props.children}</div>
+    return <div className="main">
+      {this.props.children}
     </div>
   }
 }

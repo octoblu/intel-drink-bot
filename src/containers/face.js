@@ -110,10 +110,7 @@ class Face extends Component {
     classes['glitch'] = this.state.glitch
 
     let componentClass = ClassNames(classes)
-    console.log(componentClass)
-    return <div>
-      <div className={componentClass}>{this.state.face}</div>
-    </div>
+    return <div className={componentClass}>{this.state.face}</div>
   }
 }
 
