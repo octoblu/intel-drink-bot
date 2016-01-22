@@ -76,14 +76,17 @@ html {
   box-sizing: border-box;
 }
 
+html, body, #app {
+  height:100%;
+  width:100%;
+}
+
 *, *:before, *:after {
   box-sizing: inherit;
 }
 
 body {
   margin: 0;
-  padding: 24px;
-
   background: #040404;
   color: #5cc3f6;
   font-size: 16px;
@@ -100,14 +103,14 @@ a {
   width: 100%;
   margin: 0 auto;
   padding: 24px;
-
   background: #FFF;
 }
 
 .face {
-  background: url(../../images/chris/lighten/chris-face-front.png) center center no-repeat fixed;
-  height:1000px;
-  width:1000px;
+  background: url(../../images/chris/lighten/chris-face-front.png) center center no-repeat;
+  background-size: contain;
+  min-height: 80vh;
+  min-width: 80vw;
   animation-timing-function: step-start;
 }
 
@@ -117,13 +120,13 @@ a {
   animation-iteration-count: infinite;
 }
 
-.face.talk {
-  animation-name: chris-talk;
+.face.say {
+  animation-name: chris-say;
   animation-duration: 0.5s;
   animation-iteration-count: infinite;
 }
 
-@keyframes chris-talk {
+@keyframes chris-say {
   0% {
     background-image: url('../../images/chris/lighten/chris-face-front.png');
   }

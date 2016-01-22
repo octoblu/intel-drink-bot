@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ClassNames from 'classnames'
+import _ from 'lodash'
 
 var meshbluConfig = {
   "uuid": "cbb0ae28-965a-49bd-b6b0-a30a2eda5094",
@@ -8,11 +9,14 @@ var meshbluConfig = {
   "port": 443
 }
 
-var conn = meshblu.createConnection(meshbluConfig)
 
-
-// var meshblu = new MeshbluWebsocket(meshbluConfig);
-console.log(meshbluConfig)
+function vocalize(text, callback){
+  var voice = _.findWhere(speechSynthesis.getVoices(), {name: 'Daniel'})
+  var utterance = new SpeechSynthesisUtterance(text)
+  utterance.voice = voice
+  utterance.onend = callback
+  speechSynthesis.speak(utterance)  
+}
 
 class Face extends Component {
   constructor(props) {
@@ -25,25 +29,29 @@ class Face extends Component {
 
   componentDidMount() {
     var self = this
-    conn.on('ready', function(data){
-      self.setState({face: true})
-    });
+    var conn = meshblu.createConnection(meshbluConfig)
 
     conn.on('message', function(message){
-      console.log('got message', message)
-      self.setState({
-        face: true,
-        action: message.action
-      })
-    });
-    // LISTEN a
-
+      if(self[message.action]) {
+        self[message.action](message)
+      }
+    })
   }
+
+  say(message) {
+    var self = this
+    self.setState({action: message.action})
+    vocalize(message.text, function(){
+      self.setState({action: 'wait'})
+    })
+  }
+
   render() {
     var classes = {face: true}
     classes[this.state.action] = true
 
     let componentClass = ClassNames(classes)
+    console.log(componentClass)
     return <div>
       <div className={componentClass}>{this.state.face}</div>
     </div>
