@@ -113,3 +113,24 @@ a {
 .face.smiling {
   background-color: green;
 }
+
+@keyframes test {
+  0% {
+    background-image: url('frame-01.png');
+  }
+  20% {
+    background-image: url('frame-02.png');
+  }
+  40% {
+    background-image: url('frame-03.png');
+  }
+  60% {
+    background-image: url('frame-04.png');
+  }
+  80% {
+    background-image: url('frame-05.png');
+  }
+  100% {
+    background-image: url('frame-06.png');
+  }
+}
