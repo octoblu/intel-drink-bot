@@ -105,32 +105,35 @@ a {
 }
 
 .face {
-  background: url(../../images/chris.jpg) no-repeat center center fixed;
-  height: 1000px;
-  width: 1000px;
+  background: url(../../images/chris/lighten/chris-face-front.png) center center no-repeat fixed;  
+  height:1000px;
+  width:1000px;
 }
 
 .face.smiling {
-  background-color: green;
+  animation-name: chris1;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  transition: all 0s;
 }
 
-@keyframes test {
+@keyframes chris1 {
   0% {
-    background-image: url('frame-01.png');
+    background-image: url('../../images/chris/lighten/chris-face-front.png');
+  }
+  10% {
+    background-image: url('../../images/chris/lighten/chris-face-front-open.png');
   }
   20% {
-    background-image: url('frame-02.png');
+      background-image: url('../../images/chris/lighten/chris-face-front-open2.png');
+  }
+  30% {
+    background-image: url('../../images/chris/lighten/chris-face-front-open.png');
   }
   40% {
-    background-image: url('frame-03.png');
+    background-image: url('../../images/chris/lighten/chris-face-front-open2.png');
   }
-  60% {
-    background-image: url('frame-04.png');
-  }
-  80% {
-    background-image: url('frame-05.png');
-  }
-  100% {
-    background-image: url('frame-06.png');
+  50% {
+    background-image: url('../../images/chris/lighten/chris-face-front.png');
   }
 }

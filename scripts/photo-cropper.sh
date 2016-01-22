@@ -10,3 +10,9 @@ for file in *; convert $file -fuzz 11% -transparent "rgb(172,170,158)" transpare
 
 #8-bit
 for file in *; convert $file -depth 3 PNG8:contrast.png 8-bit/$file; end
+
+#lighten
+for file in *; convert $file -level 0%,100%,1.3 lighten/$file; end
+
+#file extensions
+rename 's/\.jpg\.png$/\.png/' *.png
