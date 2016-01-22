@@ -68,7 +68,9 @@ class Face extends Component {
     var self = this
     self.setState({action, glitch:false})
     var utterance = new SpeechSynthesisUtterance(text)
-    utterance.voice = _.find(speechSynthesis.getVoices(), {name: 'Daniel'})
+    var voice = _.find(speechSynthesis.getVoices(), {name: 'Daniel'})
+    if(voice) utterance.voice = voice;
+
     utterance.rate = 0.8
     utterance.onboundary = function(event) {
       text = event.utterance.text
