@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ClassNames from 'classnames'
 import _ from 'lodash'
+import async from 'async'
 
 var meshbluConfig = {
   "uuid": "cbb0ae28-965a-49bd-b6b0-a30a2eda5094",
@@ -23,14 +24,22 @@ class Face extends Component {
 
   componentDidMount() {
     var self = this
-    var conn = meshblu.createConnection(meshbluConfig)
     self.randomlyGlitch()
+
+    speechSynthesis.onvoiceschanged = function(){
+      self.normalVoice = _.find(speechSynthesis.getVoices(), {name: 'Daniel'})
+      self.glitchVoice = _.find(speechSynthesis.getVoices(), {name: 'Alex'})
+    }
+
+
+    var conn = meshblu.createConnection(meshbluConfig)
     conn.on('message', function(message){
       console.log('message',message)
       if(self[message.action]) {
         self[message.action](message)
       }
     })
+
   }
 
   randomlyGlitch() {
@@ -64,51 +73,71 @@ class Face extends Component {
     self.setState({action, glitch:false})
   }
 
-  say({action, text}, callback) {
-    var self = this
-    self.setState({action, glitch:false})
-    var utterance = new SpeechSynthesisUtterance(text)
-    var voice = _.find(speechSynthesis.getVoices(), {name: 'Daniel'})
-    if(voice) utterance.voice = voice;
+  getPhrases(text) {
+    var phrases = []
+    var phrase = { words: [], voice: 'normal' }
 
-    utterance.rate = 0.8
-    utterance.onboundary = function(event) {
-      text = event.utterance.text
+    phrases.push(phrase)
 
-      if(event.charIndex === 0) {
+    _.each( _.words(text), function(word){
+      if(_.includes(glitchWords, word)){
+        phrase.text = phrase.words.join(' ')
+        phrases.push({ voice: 'glitch', text: word, words: [word] })
+        phrase = {words: [], voice: 'normal'}
+        phrases.push(phrase)
         return
       }
+      phrase.words.push(word)
+    })
 
-      var spoken = text.substring(0, event.charIndex)
-      var rest = text.substring(event.charIndex, text.length)
-      var nextWord = _.first( _.words( _.lowerCase(rest) ))
+    phrase.text = phrase.words.join(' ')
+    console.log('phrases', phrases);
+    return phrases
 
-      if(_.includes(glitchWords, nextWord)) {
-        utterance.onend = null
-        speechSynthesis.cancel()
-        self.glitchSay({action: action, text: nextWord}, function(){
-          self.say({action, text:rest}, callback)
-        });
-      }
-    }
-    self.vocalize({action, text, utterance}, callback)
   }
 
-  glitchSay(options, callback) {
-    console.log('glitchSay', options)
-    var action = options.action
-    var self = this;
-    self.setState({action, glitch:true})
+  say({action, text}, callback) {
+    var self = this
+    var phrases = self.getPhrases(text)
+    self.setState({action, glitch:false})
+    async.eachSeries(phrases, function iterator(phrase, callback) {
+      console.log('processing phrase', phrase)
+      if(_.isEmpty(phrase.text)){
+        return callback()
+      }
 
-    var text = _.fill(Array(3), options.text.substring(0,1)).join(' ')
-    text += ' ' + options.text
-    var voice = _.find(speechSynthesis.getVoices(), {name: 'Alex'})
-    var utterance = new SpeechSynthesisUtterance(text)
+      self.setState({action, glitch:false})
 
-    utterance.voice = voice
-    utterance.pitch = 1.7
-    utterance.rate = 1.7
-    self.vocalize({action, text, utterance}, callback)
+      var utterance = new SpeechSynthesisUtterance(phrase.text)
+      utterance.voice = self.normalVoice
+
+      if(phrase.voice === 'glitch') {
+        self.setState({action, glitch:true})
+        phrase.text = self.getGlitchText(phrase.text)
+        utterance = new SpeechSynthesisUtterance(phrase.text)
+        utterance.voice = self.glitchVoice
+
+        utterance.pitch = 1.7
+        utterance.rate = 2.0
+      }
+
+      utterance.onend = function(){ callback() }
+      utterance.onerror = function(error) { callback(error) }
+
+      speechSynthesis.speak(utterance)
+
+    }, function(){
+      self.setState({action: 'wait', glitch: 'false'})
+    })
+  }
+
+  getGlitchText(text) {
+    var glitchText = _.fill(Array(3), text.substring(0,2)).join(' ')
+    glitchText += _.fill(Array(2), text.substring(0,3)).join(' ')
+    glitchText += _.fill(Array(3), text).join(' ')
+    console.log('glitchText', glitchText)
+
+    return glitchText
   }
 
   laugh(message) {

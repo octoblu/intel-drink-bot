@@ -1,12 +1,13 @@
 {
   "name": "intel-drink-bot",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "[![Build Status](https://travis-ci.org/octoblu/.svg?branch=master)](https://travis-ci.org/octoblu/) [![Code Climate](https://codeclimate.com/github/octoblu//badges/gpa.svg)](https://codeclimate.com/github/octoblu/) [![Test Coverage](https://codeclimate.com/github/octoblu//badges/coverage.svg)](https://codeclimate.com/github/octoblu/) [![npm version](https://badge.fury.io/js/.svg)](http://badge.fury.io/js/) [![Gitter](https://badges.gitter.im/octoblu/help.svg)](https://gitter.im/octoblu/help)",
   "main": "webpack.config.dev.js",
   "directories": {
     "test": "test"
   },
   "dependencies": {
+    "async": "^1.5.2",
     "classnames": "^2.2.0",
     "clipboard": "^1.5.5",
     "file-loader": "^0.8.5",
