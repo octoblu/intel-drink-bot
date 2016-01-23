@@ -76,7 +76,7 @@ html {
   box-sizing: border-box;
 }
 
-html, body, #app, #main {
+html, body, #app, #main, #face, .face {
   height:100%;
   width:100%;
 }
@@ -109,13 +109,23 @@ a {
   padding: 24px;
   background: #FFF;
 }
+#face {
+  display: flex;
+  flex-direction: column;
+  background-color: black;
+}
+
+#face > h3  {
+  height: 2em;
+  color: white;
+  text-align: center;
+}
 
 .face {
   background: url(../../images/chris/lighten/chris-face-front.png) center center no-repeat;
   background-size: contain;
   animation-timing-function: step-start;
-  height:100%;
-  width:100%;
+  flex: 1;
 }
 
 .face.laugh {

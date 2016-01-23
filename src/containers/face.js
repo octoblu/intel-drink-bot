@@ -121,14 +121,14 @@ class Face extends Component {
     console.log('saying', text)
     var self = this
     var phrases = self.getPhrases(text)
-    self.setState({action, glitch:false})
+
     async.eachSeries(phrases, function iterator(phrase, callback) {
       console.log('processing phrase', phrase)
       if(_.isEmpty(phrase.text)){
+        self.setState({action: 'wait', glitch:false, text: false})
         return callback()
       }
-
-      self.setState({action, glitch:false})
+      self.setState({action, glitch:false, text: phrase.text})
 
       var utterance = new SpeechSynthesisUtterance(phrase.text)
       utterance.voice = self.normalVoice
@@ -143,13 +143,16 @@ class Face extends Component {
         utterance.rate = 2.0
       }
 
-      utterance.onend = function(){ callback() }
-      utterance.onerror = function(error) { callback(error) }
+      utterance.onend = function(){
+        console.log('ended')
+        callback()
+      }
+      utterance.onerror = utterance.onerror = utterance.onend
 
       speechSynthesis.speak(utterance)
 
     }, function(){
-      self.setState({action: 'wait', glitch: 'false'})
+      self.setState({action: 'wait', glitch: false, text: undefined})
     })
   }
 
@@ -204,7 +207,10 @@ class Face extends Component {
     classes['normal'] = !this.state.glitch
 
     let componentClass = ClassNames(classes)
-    return <div onClick={self.requestFullscreen} id="face" className={componentClass}>{this.state.face}</div>
+    return <div onClick={self.requestFullscreen} id="face">
+       <div className={componentClass}></div>
+       <h3>{self.state.text}</h3>
+    </div>
   }
 }
 
