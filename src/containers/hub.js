@@ -7,6 +7,7 @@ export default class Hub extends Component {
     return <ol>
       <li><Link to="/face">Face</Link></li>
       <li><Link to="/orders">Orders</Link></li>
+      <li><Link to="/marquee">Marquee</Link></li>
     </ol>
   }
 }

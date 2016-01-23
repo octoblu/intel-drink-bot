@@ -7,7 +7,7 @@ import Face from '../containers/face'
 import Hub from '../containers/hub'
 import Layout from '../containers/layout'
 import Orders from '../containers/orders'
-  
+import Marquee from '../containers/marquee'
 
 const Routes = (
   <Router history={createHistory()}>
@@ -15,6 +15,7 @@ const Routes = (
       <IndexRedirect to="hub" />
       <Route path="/face" component={Face} />
       <Route path="/orders" component={Orders} />
+      <Route path="/marquee" component={Marquee} />
       <Route path="/hub" component={Hub} />
     </Route>
   </Router>

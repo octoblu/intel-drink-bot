@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ClassNames from 'classnames'
 import _ from 'lodash'
 import async from 'async'
+import querystring from 'querystring'
 
 var meshbluConfig = {
   "uuid": "cbb0ae28-965a-49bd-b6b0-a30a2eda5094",
@@ -30,6 +31,11 @@ class Face extends Component {
   }
 
   componentDidMount() {
+    var query = querystring.parse(location.search.substring(1, location.search.length))
+    if(query.ip) {
+      localMeshbluConfig.server = query.ip
+    }
+
     var self = this
     self.randomlyGlitch()
 
