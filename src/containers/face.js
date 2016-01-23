@@ -18,7 +18,7 @@ var localMeshbluConfig = {
 }
 
 
-var glitchWords = ['future', 'citrix', 'skynet', 'drink', 'treat', 'beverage', 'drink', 'candy', 'intel', 'octo-blu', 'go']
+var glitchWords = ['future', 'citrix', 'skynet', 'drink', 'treat', 'beverage', 'drink', 'candy', 'intel', 'octo-blu', 'go', 'coming right up!']
 class Face extends Component {
   constructor(props) {
     super(props)
@@ -38,31 +38,28 @@ class Face extends Component {
       self.glitchVoice = _.find(speechSynthesis.getVoices(), {name: 'Alex'})
     }
 
+    var processMessage = function (message){
+      console.log('message',message)
+
+      if(message.payload && !message.action) {
+        message.action = message.payload
+      }
+
+      if(self[message.action]) {
+        self[message.action](message)
+      }
+    }
 
     var conn = meshblu.createConnection(meshbluConfig)
     var localCon = meshblu.createConnection(localMeshbluConfig)
-    conn.on('message', self.processMessage)
-    localCon.on('message', self.processMessage)
+    conn.on('message', processMessage)
+    localCon.on('message', processMessage)
 
-  }
-
-  processMessage(message){
-    console.log('message',message)
-
-    if(message.payload && !message.action) {
-      message.action = message.payload
-    }
-
-    if(self[message.action]) {
-      self[message.action](message)
-    }
-    if(message.payload === 'dispense') {
-    }
   }
 
   dispense(message) {
     var self = this;
-    var dispenseMessages = ['here you go', 'now dispensing', 'Do you want a treat, sir or madam?', "It's all yours!"]
+    var dispenseMessages = ['here you go', 'now dispensing', 'Do you want a treat, sir or madam?', "It's all yours!", 'Coming right up!']
     self.say({action: 'say', text: _.sample(dispenseMessages)})
   }
 
@@ -121,6 +118,7 @@ class Face extends Component {
   }
 
   say({action, text}, callback) {
+    console.log('saying', text)
     var self = this
     var phrases = self.getPhrases(text)
     self.setState({action, glitch:false})
