@@ -10,9 +10,15 @@ export default class Marquee extends Component {
   }
 
   componentDidMount() {
-    this.setState({text : 'Hi'})
+    this.setState({text: 'hi'})
   }
+
   render() {
-    return <h1 className="marquee"><marquee>{this.state.text}</marquee></h1>
+
+    return <div id="marquee">
+        <input onKeyDown={self.setText}/>
+        <h1><marquee>{this.state.text}</marquee></h1>
+      </div>
   }
+
 }

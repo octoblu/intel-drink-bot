@@ -76,7 +76,7 @@ html {
   box-sizing: border-box;
 }
 
-html, body, #app, #main, #face, .face {
+html, body, #app, #main, #face, #marquee .face {
   height:100%;
   width:100%;
 }
@@ -110,7 +110,7 @@ a {
   background: #FFF;
 }
 
-.marquee {
+#marquee marquee {
   width: 100%;
   font-size: 10em;
   height: 100%;

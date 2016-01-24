@@ -23,6 +23,24 @@ var glitchWords = ['future', 'citrix', 'skynet', 'drink', 'treat', 'beverage', '
 class Face extends Component {
   constructor(props) {
     super(props)
+    _.bindAll(this, [
+      'dispense',
+      'randomlyGlitch',
+      'glitch',
+      'unGlitch',
+      'reload',
+      'dance',
+      'getPhrases',
+      'say',
+      'getGlitchText',
+      'laugh',
+      'wait',
+      'vocalize',
+      'requestFullscreen',
+      'render',
+      'processMessage',
+      'processPhrase'
+    ])
   }
 
   state = {
@@ -36,59 +54,56 @@ class Face extends Component {
       localMeshbluConfig.server = query.ip
     }
 
-    var self = this
-    self.randomlyGlitch()
+    this.randomlyGlitch()
 
     speechSynthesis.onvoiceschanged = function(){
-      self.normalVoice = _.find(speechSynthesis.getVoices(), {name: 'Daniel'})
-      self.glitchVoice = _.find(speechSynthesis.getVoices(), {name: 'Alex'})
-    }
-
-    var processMessage = function (message){
-      console.log('message',message)
-
-      if(message.payload && !message.action) {
-        message.action = message.payload
-      }
-
-      if(self[message.action]) {
-        self[message.action](message)
-      }
+      this.normalVoice = _.find(speechSynthesis.getVoices(), {name: 'Daniel'})
+      this.glitchVoice = _.find(speechSynthesis.getVoices(), {name: 'Alex'})
     }
 
     var conn = meshblu.createConnection(meshbluConfig)
     var localCon = meshblu.createConnection(localMeshbluConfig)
-    conn.on('message', processMessage)
-    localCon.on('message', processMessage)
+    conn.on('message', this.processMessage)
+    localCon.on('message', this.processMessage)
 
+  }
+
+  processMessage(message) {
+    console.log('message',message)
+
+    if(message.payload && !message.action) {
+      message.action = message.payload
+    }
+
+    if(this[message.action]) {
+      this[message.action](message)
+    }
   }
 
   dispense(message) {
-    var self = this;
+
     var dispenseMessages = ['here you go', 'now dispensing', 'Do you want a treat, sir or madam?', "It's all yours!", 'Coming right up!']
-    self.say({action: 'say', text: _.sample(dispenseMessages)})
+    this.say({action: 'say', text: _.sample(dispenseMessages)})
   }
 
   randomlyGlitch() {
-    var self = this
+    var face = this
     setInterval(function(){
       if(Math.random() > 0.01) {
-        self.glitch()
+        face.glitch()
         setTimeout(function(){
-          self.unGlitch()
+          face.unGlitch()
         }, 5000);
       }
     }, 5000)
   }
 
   glitch() {
-    var self = this;
-    self.setState({glitch: true})
+    this.setState({glitch: true})
   }
 
   unGlitch() {
-    var self = this;
-    self.setState({glitch: false})
+    this.setState({glitch: false})
   }
 
   reload ({action, text}, callback) {
@@ -96,8 +111,7 @@ class Face extends Component {
   }
 
   dance ({action, text}, callback) {
-    var self = this;
-    self.setState({action, glitch:false})
+    this.setState({action, glitch:false})
   }
 
   getPhrases(text) {
@@ -124,42 +138,43 @@ class Face extends Component {
   }
 
   say({action, text}, callback) {
+    var face = this
     console.log('saying', text)
-    var self = this
-    var phrases = self.getPhrases(text)
-
-    async.eachSeries(phrases, function iterator(phrase, callback) {
-      console.log('processing phrase', phrase)
-      if(_.isEmpty(phrase.text)){
-        self.setState({action: 'wait', glitch:false, text: false})
-        return callback()
-      }
-      self.setState({action, glitch:false, text: phrase.text})
-
-      var utterance = new SpeechSynthesisUtterance(phrase.text)
-      utterance.voice = self.normalVoice
-
-      if(phrase.voice === 'glitch') {
-        self.setState({action, glitch:true})
-        phrase.text = self.getGlitchText(phrase.text)
-        utterance = new SpeechSynthesisUtterance(phrase.text)
-        utterance.voice = self.glitchVoice
-
-        utterance.pitch = 1.7
-        utterance.rate = 2.0
-      }
-
-      utterance.onend = function(){
-        console.log('ended')
-        callback()
-      }
-      utterance.onerror = utterance.onerror = utterance.onend
-
-      speechSynthesis.speak(utterance)
-
-    }, function(){
-      self.setState({action: 'wait', glitch: false, text: undefined})
+    var phrases = this.getPhrases(text)
+    async.eachSeries(phrases, this.processPhrase, function(){
+      face.setState({action: 'wait', glitch: false, text: undefined})
     })
+  }
+
+  processPhrase(phrase, callback) {
+    console.log('processPhrase', phrase)
+    if(_.isEmpty(phrase.text)){
+      this.setState({action: 'wait', glitch:false, text: false})
+      return callback()
+    }
+    this.setState({action: 'say', glitch:false, text: phrase.text})
+
+    var utterance = new SpeechSynthesisUtterance(phrase.text)
+    utterance.voice = this.normalVoice
+
+    if(phrase.voice === 'glitch') {
+      this.setState({glitch:true})
+      phrase.text = this.getGlitchText(phrase.text)
+      utterance = new SpeechSynthesisUtterance(phrase.text)
+      utterance.voice = this.glitchVoice
+
+      utterance.pitch = 1.7
+      utterance.rate = 2.0
+    }
+
+    utterance.onend = function(){
+      console.log('ended')
+      callback()
+    }
+    utterance.onerror = utterance.onerror = utterance.onend
+
+    speechSynthesis.speak(utterance)
+
   }
 
   getGlitchText(text) {
@@ -172,20 +187,17 @@ class Face extends Component {
   }
 
   laugh(message) {
-    var self = this
-    self.setState({action: message.action})
+    this.setState({action: message.action})
   }
 
   wait(message) {
-    var self = this
-    self.setState({action: message.action})
+
+    this.setState({action: message.action})
   }
 
   vocalize({action, text, utterance}, callback) {
-    var self = this;
-
     utterance.onend = utterance.onend = function() {
-      self.setState({action: 'wait'})
+      this.setState({action: 'wait'})
       if(callback) callback()
     }
     speechSynthesis.speak(utterance)
@@ -206,16 +218,15 @@ class Face extends Component {
   }
 
   render() {
-    var self = this;
     var classes = {face: true}
     classes[this.state.action] = true
     classes['glitch'] = this.state.glitch
     classes['normal'] = !this.state.glitch
 
     let componentClass = ClassNames(classes)
-    return <div onClick={self.requestFullscreen} id="face">
+    return <div onClick={this.requestFullscreen} id="face">
        <div className={componentClass}></div>
-       <h3>{self.state.text}</h3>
+       <h3>{this.state.text}</h3>
     </div>
   }
 }
