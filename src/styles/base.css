@@ -76,7 +76,7 @@ html {
   box-sizing: border-box;
 }
 
-html, body, #app, #main, #face, #marquee .face {
+html, body, #app, #main, #face, #marquee, .face {
   height:100%;
   width:100%;
 }
@@ -111,10 +111,18 @@ a {
 }
 
 #marquee marquee {
-  width: 100%;
   font-size: 10em;
-  height: 100%;
   color: white;
+  cursor: pointer;
+}
+
+#marquee header {
+  display: flex;
+  flex-direction: column;
+}
+
+#marquee header .hide {
+  display:none;
 }
 
 #face {
