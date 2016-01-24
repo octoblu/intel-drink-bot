@@ -3,6 +3,9 @@ import ClassNames from 'classnames'
 import _ from 'lodash'
 import async from 'async'
 import querystring from 'querystring'
+import meshblu from 'imports!../../lib/meshblu.js'
+
+console.log('meshblu', meshblu)
 
 var meshbluConfig = {
   "uuid": "cbb0ae28-965a-49bd-b6b0-a30a2eda5094",
