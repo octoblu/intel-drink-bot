@@ -50,9 +50,12 @@ class Face extends Component {
 
   componentDidMount() {
     var query = querystring.parse(location.search.substring(1, location.search.length))
-    if(query.ip) {
-      localMeshbluConfig.server = query.ip
-    }
+    _.each(localMeshbluConfig, function(value, key){
+      if(query[key]) {
+        console.log('setting local meshbluconfig', key, 'to', query[key])
+        localMeshbluConfig[key] = query[key]
+      }
+    })
 
     this.randomlyGlitch()
 
@@ -81,7 +84,6 @@ class Face extends Component {
   }
 
   dispense(message) {
-
     var dispenseMessages = ['here you go', 'now dispensing', 'Do you want a treat, sir or madam?', "It's all yours!", 'Coming right up!']
     this.say({action: 'say', text: _.sample(dispenseMessages)})
   }
@@ -191,7 +193,6 @@ class Face extends Component {
   }
 
   wait(message) {
-
     this.setState({action: message.action})
   }
 
