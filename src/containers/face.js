@@ -17,7 +17,7 @@ var meshbluConfig = {
 var localMeshbluConfig = {
   "uuid": "5285ddf7-5250-4f92-ae0a-b783e4fda87b",
   "token": "1e7387b9bcb14b9606d4fe6e077d7f886323b9c6",
-  "server": "edison.local",
+  "server": "192.168.100.185",
   "port": 3040
 }
 

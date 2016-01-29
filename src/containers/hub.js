@@ -8,6 +8,8 @@ export default class Hub extends Component {
       <li><Link to="/face">Face</Link></li>
       <li><Link to="/orders">Orders</Link></li>
       <li><Link to="/marquee">Marquee</Link></li>
+      <li><a href="./drive-interface/index.html">Drive</a></li>
+      <li><a href="./drive-interface/camera.html">Camera</a></li>
     </ol>
   }
 }
